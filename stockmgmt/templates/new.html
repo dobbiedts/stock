@@ -1,0 +1,94 @@
+{% load static %}
+{% include 'navbar.html' %}
+{% load crispy_forms_tags %}
+
+<head>
+	  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="{% static 'css/stylesheet.css' %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <script src="{% static 'js/myjs.js' %}"></script>
+   
+</head>
+{% comment %} <style>  
+  body{
+	  background-color: #e7e7e7!important;
+  }
+
+  .main-container{
+    	width: 85%;
+    	margin: auto;
+    }   
+</style> {% endcomment %}
+<body>
+<div class='main-container'>
+    <br>
+	<h2 class = "text-center" >{{ title }}</h2>
+	<br>
+	<div class="myForm">
+  <form method='POST' action=''>{% csrf_token %}
+    <div class="row">
+      <div class='col-sm-12'>
+        <div class="form-row justify-content align-item">
+          <div class="form-group col-md-3">
+            {{ form.invoice_number|as_crispy_field }}
+          </div>
+          <div class="form-group col-md-3">
+            {{ form.name|as_crispy_field }}
+          </div>
+          <div class="form-group col-md-4 ">
+            {{ form.generate_invoice|as_crispy_field }}
+            <button type="submit" class="btn btn-primary">Search/Generate</button>
+          </div>
+
+
+          {% comment %} <div class="form-group col-md-5">
+            <br>
+            
+          </div> {% endcomment %}
+          </div>
+      </div>
+    </div>
+  </form>
+</div>
+	<br>
+	<table class= "table  table-bordered" id="table_id">
+        <thead>
+          <tr>
+            <th>COUNT</th>
+            <th>DATE</th>
+            <th>CUSTOMER NAME</th>
+            <th>INVOICE NUMBER</th>
+            <th>AMOUNT</th>
+            <th>DELETE</th>
+          </tr>
+        </thead>
+      {% for instance in queryset %}
+          <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{instance.invoice_date}}</td>
+            <td><a href="{% url 'update_invoice' instance.id %}">{{instance.name}}</a></td>
+            <td>{{instance.invoice_number}}</td>
+            <td>{{instance.total}}</td>
+            <td><a href = "{% url 'delete_invoice' instance.id %}"><img src = "{% static 'img/del.png' %}" style="width:18px; height:18px;"></a></td>
+
+          </tr>
+      {% endfor %}
+    </table>
+    <a href="#" class="scrollToTop">Scroll To Top</a>
+
+    
+
+	
+</div>
+</body>
+<script>
+$(document).ready(function() {
+    $('#table_id').DataTable();
+} 
+);
+console.log("ready")
+
+</script>
+</html>

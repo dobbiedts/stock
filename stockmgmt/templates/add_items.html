@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      .display_table{
+      	border-bottom-right-radius: 20px;
+      	/*border-bottom-left-radius: 20px;*/
+      	padding-left: 5px;
+	      padding-right: 5px;
+      	padding-bottom: 20px;
+	      box-shadow: 12px 12px 10px #2e6da4;
+}
+    </style>
+    <!-- Custom styles for this template -->
+   
+  
+  {% include 'navbar.html' %} 
+  {% include 'modal.html' %}   
+
+ 
+    
+      <div class = "row">
+      <div class = "col-sm-3"></div>
+        <div class = "col-sm-6">
+        <h1 class="text-center">{{ title }}</h1>
+          <div class = "display_table1"> 
+              <form method = 'POST' action = ''>
+                  {% csrf_token %}
+                  {{ form|crispy }}
+              <b><input class = "btn btn-primary mybutton" type = "submit" value = 'Save' /></b>
+              </form>
+          </div> 
+        </div>
+        <div class = "col-sm-3"></div>
+      </div>
+ 
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script></body>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+

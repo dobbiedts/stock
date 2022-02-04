@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-xl-12 col-md-12 col-12">
+        <ul class="pagination justify-content-center"> 
+            <li class="page-item active">
+                {% if page_obj.has_previous %}
+                    {% if qset %}
+                        <a class="page-link" href="?q={{queryset}}&page={{ page_obj.previous_page_number }}">&laquo;</a>
+                    {% else %}
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                    {% endif %}
+                {% else %}
+                    <span class="page-link">&lsaquo;</span>
+                {% endif %}
+            </li>
+            <li class="page-item">
+                <span class="page-link"> {{ page_obj.number}}</span>
+            </li>
+            <li class="page-item">
+                <span class="page-link "><em><small> of </small></em></span>
+            </li>
+            <li class="page-item">
+                <span class="page-link"> {{ page_obj.paginator.num_pages }} </span>
+            </li>
+            <li class="page-item active">
+                {% if page_obj.has_next %}
+                    {% if qset %}
+                        <a class="page-link" href="?q={{queryset}}&page={{ page_obj.next_page_number }}">&raquo;</a>
+                    {% else %}
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                    {% endif %}
+                {% else %}
+                    <span class="page-link">&rsaquo;</span>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</div>
