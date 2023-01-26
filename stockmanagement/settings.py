@@ -153,15 +153,23 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL=False
 EMAIL_PORT = 587
 EMAIL_FROM='DobbieDts'
-EMAIL_HOST_USER = 'djangotestmailll@gmail.com'
+# EMAIL_HOST_USER = 'djangotestmailll@gmail.com'
+# EMAIL_HOST_PASSWORD = 'September95'
+
+EMAIL_HOST_USER = 'ayakinloyeee@gmail.com'
 EMAIL_HOST_PASSWORD = 'September95'
+
+
 
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window
 REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.
 SITE_ID = 1
-LOGIN_REDIRECT_URL = '/list_invoice'
+LOGIN_REDIRECT_URL = '/list_items'
 
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+SESSION_COOKIE_AGE = 60
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
+
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)

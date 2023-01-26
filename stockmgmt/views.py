@@ -11,10 +11,13 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.mail import EmailMessage
 from django.conf import settings
+from django.contrib.auth import user_logged_in
 from io import StringIO, BytesIO
 from stockmanagement.settings import EMAIL_HOST_USER as DobbieDts
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
+from django.dispatch.dispatcher import receiver
 
 
 
@@ -22,6 +25,31 @@ from django.contrib.auth.forms import AuthenticationForm
 
 
 # Create your views here.
+
+@receiver(user_logged_in)
+def remove_other_sessions(sender, user, request, **kwargs):
+    # create a link from the user to the current session (for later removal)
+    if SystemLog.objects.filter(Q(user=user)).exists():
+        last_session = SystemLog.objects.filter(Q(user=user) & Q(loggedout_at=None)).last()
+
+        if UserSession.objects.filter(user=user).exists():
+            usd  = UserSession.objects.filter(user=user).last()
+            SystemLog.objects.filter(session_id=usd.session_id).update(
+                loggedout_at = timezone.now()
+            )
+        elif last_session:
+            SystemLog.objects.filter(id=last_session.id).update(
+                loggedout_at = timezone.now()
+            )
+
+    Session.objects.filter(usersession__user=user).delete()
+
+    # save current session
+    request.session.save()
+    
+    UserSession.objects.get_or_create(
+        user=user, session=Session.objects.get(pk=request.session.session_key)
+    )
 
 def register_request(request):
 
@@ -86,11 +114,11 @@ def list_items(request):
     queryset = Stock.objects.all()
     form = StockSearchForm(request.POST or None)
     
-    context = {
-        "header" : header,
-        "queryset" : queryset,
-        "form" : form,
-    }
+    # context = {
+    #     "header" : header,
+    #     "queryset" : queryset,
+    #     "form" : form,
+    # }
     if request.method == 'POST':
         queryset = Stock.objects.filter(category__icontains = form['category'].value(),
                                         item_name__icontains = form['item_name'].value(),
@@ -106,10 +134,11 @@ def list_items(request):
                 writer.writerow([stock.category, stock.item_name, stock.quantity])
             return response
         
-        context = {
-            "form" : form,
-            "queryset": queryset,
-            "header" : header,        }
+    context = {
+         "form" : form,
+         "queryset": queryset,
+        "header" : header,       
+     }
 
     return render(request, "list_items.html", context)
 

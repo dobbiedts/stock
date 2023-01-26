@@ -1,5 +1,8 @@
 from django.db import models
 from django.db.models.expressions import F
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
 
 # Create your models here.
 category_choice = (
@@ -44,3 +47,22 @@ class StockHistory(models.Model):
     reorder_level = models.IntegerField(default='0', blank=True, null=True)
     last_updated = models.DateTimeField(auto_now_add=False, auto_now=False, null=True)
     timestamp = models.DateTimeField(auto_now_add=False, auto_now=False, null=True)
+    
+    
+    
+class UserSession(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    session = models.OneToOneField(Session, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "user_session"
+        
+class SystemLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    email = models.EmailField(null=True, blank=True)
+    session_id = models.TextField(null=True, blank=True)
+    loggedin_at = models.DateTimeField(auto_now_add=True)
+    loggedout_at = models.DateTimeField(null=True)
+
+    class Meta:
+        db_table = 'system_log'
