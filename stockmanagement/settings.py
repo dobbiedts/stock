@@ -166,7 +166,7 @@ REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/list_items'
 
-SESSION_COOKIE_AGE = 60
+SESSION_COOKIE_AGE = 1800
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # db_from_env = dj_database_url.config(conn_max_age=500)
